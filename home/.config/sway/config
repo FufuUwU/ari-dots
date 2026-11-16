@@ -209,12 +209,26 @@ bindsym $mod+o exec brightnessctl --device='tpacpi::kbd_backlight' set 1-
 bindsym $mod+p exec brightnessctl --device='tpacpi::kbd_backlight' set +1
 
 # Screenshots
+
+### Screenshots
+#
+# Print                  - Full screenshot, copy to clipboard
+# Ctrl + Shift + Print   - Region screenshot, copy to clipboard
+# Ctrl + Print           - Full screenshot, save to file
+# Shift + Print          - Region screenshot, save to file
+# Ctrl + Alt + Print     - Toggle screen recording
+# Super + Print          - Select region, copy to clipboard
+# Super + Shift + Print  - Select region, save to Pictures/Screenshots
+
 bindsym Print exec $ss -c
 bindsym Ctrl+Shift+Print exec $ss -s -c
 bindsym Ctrl+Print exec $ss
 bindsym Shift+Print exec $ss -s
-# Same bind starts and stops the recording
 bindsym Ctrl+Alt+Print exec $ss -r
+
+# Region capture
+bindsym $mod+Print exec grim -g "$(slurp)" - | wl-copy
+bindsym $mod+Shift+Print exec mkdir -p ~/Pictures/Screenshots && grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y%m%d-%H%M%S).png
 
 # Music
 bindsym $mod+a exec playerctl previous
@@ -222,8 +236,8 @@ bindsym $mod+d exec playerctl next
 bindsym $mod+s exec playerctl play-pause
 
 # Custom Apps
-bindsym $mod+z exec flatpak run org.equicord.equibop
-bindsym $mod+c exec flatpak run com.vscodium.codium
+bindsym $mod+z exec discord
+bindsym $mod+c exec vscodium
 
 ### Window Rules
 #
@@ -232,7 +246,7 @@ gaps inner 5
 gaps outer 12
 
 # Opacity
-for_window [all] opacity set 0.9
+for_window [all] opacity set 0.95
 for_window [app_id="gimp*"] opacity set 1.0
 for_window [app_id="krita*"] opacity set 1.0
 for_window [app_id="org.inkscape.Inkscape"] opacity set 1.0
