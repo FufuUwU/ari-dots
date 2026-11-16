@@ -1,0 +1,8 @@
+# Machine-specific Portage settings for fentoo.
+
+COMMON_FLAGS="-O2 -pipe -march=native"
+CFLAGS="${COMMON_FLAGS}"
+CXXFLAGS="${COMMON_FLAGS}"
+
+MAKEOPTS="-j10"
+VIDEO_CARDS="intel"

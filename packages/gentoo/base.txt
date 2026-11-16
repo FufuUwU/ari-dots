@@ -1,0 +1,17 @@
+# System administration
+app-admin/sudo
+app-eselect/eselect-repository
+
+# Networking and system utilities
+net-misc/networkmanager
+sys-apps/pciutils
+sys-apps/tuned
+
+# Bootloader and kernel
+sys-boot/efibootmgr
+sys-boot/grub
+sys-kernel/gentoo-kernel-bin
+
+# Firmware and hardware support
+sys-firmware/sof-firmware
+sys-kernel/linux-firmware

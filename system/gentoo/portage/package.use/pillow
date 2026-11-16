@@ -1,0 +1,2 @@
+dev-python/pillow -truetype
+>=sys-kernel/installkernel-70-r1 dracut

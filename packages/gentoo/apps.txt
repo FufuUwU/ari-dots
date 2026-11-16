@@ -1,0 +1,14 @@
+# Browsers and communication
+www-client/firefox
+net-im/discord
+
+# Terminal
+x11-terms/kitty
+
+# System information
+app-misc/fastfetch
+app-misc/hyfetch
+app-misc/neofetch
+
+# Development tools
+dev-util/github-cli

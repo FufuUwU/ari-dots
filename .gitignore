@@ -1,0 +1,20 @@
+# Editor and temporary files
+*~
+*.swp
+*.swo
+*.orig
+*.bak
+*.tmp
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Build and cache output
+.cache/
+__pycache__/
+*.pyc
+
+# Local environment files
+.env
+.env.*

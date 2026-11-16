@@ -1,0 +1,5 @@
+gui-wm/swayfx ~amd64
+gui-libs/scenefx ~amd64
+gui-apps/fuzzel ~amd64
+gui-apps/gtklock ~amd64
+gui-libs/gtk-session-lock ~amd64

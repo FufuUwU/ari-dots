@@ -1,0 +1,24 @@
+# Desktop environments and compositors
+kde-plasma/plasma-meta
+gui-wm/swayfx
+
+# Display manager
+gui-apps/sddm
+
+# Wayland desktop utilities
+gui-apps/fuzzel
+gui-apps/grim
+gui-apps/gtklock
+gui-apps/mako
+gui-apps/mpvpaper
+gui-apps/slurp
+gui-apps/swaylock
+gui-apps/waybar
+gui-apps/wl-clipboard
+
+# Audio
+media-video/pipewire
+media-sound/alsa-utils
+
+# Fonts and icons
+media-fonts/fontawesome
