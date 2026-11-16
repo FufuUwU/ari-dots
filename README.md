@@ -81,7 +81,7 @@ AUR packages are tracked separately in `packages/arch/aur.txt` and are not autom
 Clone the repository and enter its directory:
 
 ```bash
-git clone <repository-url> ari-dots
+git clone https://github.com/FufuUwU/ari-dots ari-dots
 cd ari-dots
 ```
 
