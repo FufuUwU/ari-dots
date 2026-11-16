@@ -1,253 +1,59 @@
 # Ari-Dots
 
-Personal Linux configuration repository containing dotfiles, system configuration, package manifests and installation scripts.
+Personal Linux dotfiles and system configuration for Arch Linux and Gentoo.
 
-The goal is to keep system configuration version-controlled, reproducible and easy to deploy on a fresh installation.
+## Installation order
 
-> **Status:** Work in progress. Gentoo and Arch Linux are the intended supported distributions.
+1. `install-arch.sh` / `install-gentoo.sh` — install packages for the current distribution.
+2. Install AUR packages separately on Arch using `yay`.
+3. `install.sh` — link dotfiles and configuration files into your home directory. Existing files are backed up automatically.
 
-## Features
+Use `--dry-run` to preview changes before applying them.
 
-- Home directory configuration managed through symbolic links.
-- Separate package manifests for Gentoo and Arch Linux.
-- Distribution-specific package installation scripts.
-- Distribution-specific system configuration exporters.
-- Shared dotfile installation and uninstallation.
-- Dry-run support for installation and export operations.
-- Automatic backups of conflicting files before replacing them with symlinks.
+## Scripts
 
-## Repository structure
+- `install.sh` — installs home configuration and scripts.
+- `install-arch.sh` — installs official Arch packages.
+- `install-gentoo.sh` — installs Gentoo packages.
+- `export-arch.sh` — exports Arch system configuration into the repository.
+- `export-gentoo.sh` — exports Gentoo system configuration into the repository.
+- `uninstall.sh` — removes Ari-Dots symlinks. Backups and repository files are kept.
 
-```text
-ari-dots/
-├── docs/
-├── home/
-│   ├── .bashrc
-│   ├── .bash_profile
-│   ├── .bash_logout
-│   ├── .config/
-│   └── .local/bin/
-├── packages/
-│   ├── arch/
-│   │   ├── apps.txt
-│   │   ├── aur.txt
-│   │   ├── base.txt
-│   │   └── desktop.txt
-│   └── gentoo/
-│       ├── apps.txt
-│       ├── base.txt
-│       └── desktop.txt
-├── scripts/
-├── system/
-│   ├── arch/
-│   ├── gentoo/
-│   │   └── portage/
-│   ├── sddm/
-│   └── tuned/
-├── export-arch.sh
-├── export-gentoo.sh
-├── install-arch.sh
-├── install-gentoo.sh
-├── install.sh
-├── uninstall.sh
-└── README.md
-```
+## Package lists
 
-## Requirements
+### Arch — `packages/arch/`
 
-### General
+- `base.txt` — essential system packages.
+- `desktop.txt` — desktop environment and Wayland utilities.
+- `apps.txt` — applications and everyday utilities.
+- `aur.txt` — packages installed from the AUR.
+- `all-packages.txt` — snapshot of every installed package.
+- `repo-packages.txt` — snapshot of official repository packages.
+- `foreign-packages.txt` — snapshot of AUR and foreign packages.
+- `dev-packages.txt` — development tools.
 
-- Bash
-- GNU core utilities
-- Findutils
-- `sudo`
+### Gentoo — `packages/gentoo/`
 
-### Gentoo
+- `base.txt` — essential system packages.
+- `desktop.txt` — desktop environment and utilities.
+- `apps.txt` — applications and everyday utilities.
 
-- Gentoo Linux
-- Portage (`emerge`)
-- Configured Portage repositories
+## Manual package management
 
-### Arch Linux
-
-- Arch Linux
-- `pacman`
-- Configured package repositories
-
-AUR packages are tracked separately in `packages/arch/aur.txt` and are not automatically installed by the official package installer.
-
-## Installation
-
-Clone the repository and enter its directory:
+Install packages from a list:
 
 ```bash
-git clone https://github.com/FufuUwU/ari-dots ari-dots
-cd ari-dots
+grep -Ev '^[[:space:]]*(#|$)' packages/arch/base.txt |
+  xargs -r sudo pacman -S --needed
 ```
 
-### Dotfiles
-
-Preview the dotfile installation:
+Remove packages from a list:
 
 ```bash
-./install.sh --dry-run
+grep -Ev '^[[:space:]]*(#|$)' packages/arch/base.txt |
+  xargs -r sudo pacman -R
 ```
 
-Install the dotfiles:
+Replace `base.txt` with the desired package list.
 
-```bash
-./install.sh
-```
-
-The shared installer creates symbolic links from the repository into the home directory.
-
-Existing conflicting files and symlinks are backed up under:
-
-```text
-~/.local/state/ari-dots-backups/
-```
-
-Existing files that are already correctly linked are left untouched.
-
-## Package installation
-
-Package installation is handled by separate distribution-specific scripts.
-
-### Gentoo
-
-Preview the package transaction:
-
-```bash
-./install-gentoo.sh --dry-run
-```
-
-Install packages:
-
-```bash
-./install-gentoo.sh
-```
-
-The installer reads every `.txt` manifest in `packages/gentoo/` and passes the listed packages to Portage.
-
-### Arch Linux
-
-Preview the package transaction:
-
-```bash
-./install-arch.sh --dry-run
-```
-
-Install packages:
-
-```bash
-./install-arch.sh
-```
-
-The installer reads the official repository package manifests in `packages/arch/` and passes the listed packages to pacman.
-
-AUR packages are kept separate in `packages/arch/aur.txt` and require a separate AUR helper or manual installation.
-
-> **Note:** Arch package manifests are currently being populated. The Arch package installer will not install anything until official package entries have been added.
-
-Package installation is separate from dotfile installation.
-
-## Exporting system configuration
-
-System configuration exporters copy selected live system configuration files into the repository.
-
-They are distribution-specific.
-
-### Gentoo
-
-Preview the export:
-
-```bash
-./export-gentoo.sh --dry-run
-```
-
-Perform the export:
-
-```bash
-./export-gentoo.sh
-```
-
-The Gentoo exporter handles selected configuration from:
-
-- `/etc/portage/`
-- `/etc/sddm.conf.d/`
-- `/etc/tuned/`
-- `/usr/share/sddm/themes/moon/`
-
-### Arch Linux
-
-Preview the export:
-
-```bash
-./export-arch.sh --dry-run
-```
-
-Perform the export:
-
-```bash
-./export-arch.sh
-```
-
-The Arch exporter handles selected configuration from:
-
-- `/etc/pacman.conf`
-- `/etc/sddm.conf.d/`
-- `/etc/tuned/`
-- `/usr/share/sddm/themes/moon/`
-
-Exporters are additive: they update or create repository files, but do not automatically delete files that have been removed from the live system.
-
-Review exported changes before committing them.
-
-## Uninstallation
-
-Run:
-
-```bash
-./uninstall.sh
-```
-
-The uninstaller removes symbolic links managed by this repository.
-
-It does not delete repository files or automatically restore previous configurations. Backups remain available under:
-
-```text
-~/.local/state/ari-dots-backups/
-```
-
-Restore previous files manually if required.
-
-## Command reference
-
-| Command | Description |
-|---|---|
-| `./install.sh` | Install home directory configurations |
-| `./install.sh --dry-run` | Preview dotfile installation |
-| `./install.sh --help` | Display shared installer help |
-| `./install-gentoo.sh` | Install Gentoo packages |
-| `./install-gentoo.sh --dry-run` | Preview Gentoo package installation |
-| `./install-arch.sh` | Install Arch packages |
-| `./install-arch.sh --dry-run` | Preview Arch package installation |
-| `./export-gentoo.sh` | Export Gentoo system configuration |
-| `./export-gentoo.sh --dry-run` | Preview Gentoo configuration export |
-| `./export-arch.sh` | Export Arch system configuration |
-| `./export-arch.sh --dry-run` | Preview Arch configuration export |
-| `./uninstall.sh` | Remove repository-managed symlinks |
-
-## Notes
-
-- Home directory configuration is shared between distributions wherever possible.
-- Distribution-specific package manifests and system configuration are kept separate.
-- Gentoo-specific Portage settings are stored under `system/gentoo/`.
-- Machine-specific Portage settings are separated into `make.conf.local`.
-- System configuration files are exported into the repository; they are not automatically deployed by the home dotfile installer.
-- Package installation and system configuration export must be run separately.
-- Review personal assets, font licensing and configuration contents before publishing this repository.
-
-## License
-
-No repository-wide license has been selected yet. Individual assets and bundled fonts may have their own licensing requirements.
+**Note:** Package snapshots are for reference or restoring an existing package set. Review them before installing or removing packages.
