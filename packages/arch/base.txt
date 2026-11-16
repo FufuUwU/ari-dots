@@ -1,0 +1,24 @@
+# System administration
+sudo
+git
+base-devel
+
+# Networking and hardware
+networkmanager
+pciutils
+bluez
+bluez-utils
+
+# Bootloader and kernel
+grub
+efibootmgr
+linux
+linux-firmware
+intel-ucode
+
+# Firmware
+sof-firmware
+
+# Power management
+tuned
+tuned-ppd

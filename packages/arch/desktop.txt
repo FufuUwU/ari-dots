@@ -1,0 +1,46 @@
+# SwayFX desktop environment
+sddm
+waybar
+fuzzel
+mako
+gtklock
+swaylock
+swayidle
+autotiling
+
+# Wayland utilities
+grim
+slurp
+wl-clipboard
+cliphist
+
+# Wallpaper
+# mpvpaper is listed separately in aur.txt
+
+# Audio
+pipewire
+pipewire-alsa
+pipewire-pulse
+wireplumber
+alsa-utils
+playerctl
+pavucontrol
+
+# Hardware controls
+brightnessctl
+light
+
+# Desktop integration
+gnome-keyring
+polkit-gnome
+flatpak
+
+# Fonts and icons
+ttf-font-awesome
+
+# Helper script dependencies
+libnotify
+jq
+imagemagick
+wlsunset
+wf-recorder

@@ -1,0 +1,8 @@
+# SwayFX compositor
+swayfx
+
+# Wallpaper utility
+mpvpaper
+
+# System information
+neofetch

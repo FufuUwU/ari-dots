@@ -1,0 +1,17 @@
+# Browser and communication
+firefox
+mpv
+discord
+
+# Terminal
+kitty
+yazi
+bluetui
+
+# System information and monitoring
+fastfetch
+hyfetch
+btop
+
+# Development tools
+github-cli

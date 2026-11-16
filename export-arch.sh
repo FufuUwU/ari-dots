@@ -7,13 +7,10 @@ GROUP="$(id -gn)"
 DRY_RUN=0
 
 case "${1:-}" in
-    "")
-        ;;
-    --dry-run)
-        DRY_RUN=1
-        ;;
+    "") ;;
+    --dry-run) DRY_RUN=1 ;;
     *)
-        echo "Usage: ./export.sh [--dry-run]"
+        echo "Usage: ./export-arch.sh [--dry-run]"
         exit 1
         ;;
 esac
@@ -51,13 +48,12 @@ export_tree() {
         export_file "$src" "$dest_dir/$relative"
     done < <(
         find "$source_dir" -type f \
-            ! -name '._cfg*' \
             ! -name '*.bak' \
             -print0 | sort -z
     )
 }
 
-echo "========== ARI-DOTS SYSTEM EXPORT =========="
+echo "========== ARI-DOTS ARCH SYSTEM EXPORT =========="
 echo "Repository: $ROOT"
 
 if (( DRY_RUN )); then
@@ -65,13 +61,18 @@ if (( DRY_RUN )); then
 fi
 
 echo
+echo "========== PACMAN CONFIGURATION =========="
+
+export_file \
+    "/etc/pacman.conf" \
+    "$ROOT/system/arch/pacman/pacman.conf"
+
+echo
 echo "========== SDDM CONFIGURATION =========="
 
-for file in moon.conf 01gentoo.conf; do
-    export_file \
-        "/etc/sddm.conf.d/$file" \
-        "$ROOT/system/sddm/configs/$file"
-done
+export_file \
+    "/etc/sddm.conf.d/moon.conf" \
+    "$ROOT/system/sddm/configs/moon.conf"
 
 echo
 echo "========== SDDM MOON THEME =========="
@@ -90,27 +91,10 @@ for file in ppd.conf tuned-main.conf profile_mode ppd_base_profile; do
 done
 
 echo
-echo "========== GENTOO PORTAGE =========="
-
-export_file \
-    "/etc/portage/make.conf" \
-    "$ROOT/system/gentoo/portage/make.conf"
-
-export_file \
-    "/etc/portage/make.conf.local" \
-    "$ROOT/system/gentoo/portage/make.conf.local"
-
-for dir in package.use package.accept_keywords package.license repos.conf binrepos.conf; do
-    export_tree \
-        "/etc/portage/$dir" \
-        "$ROOT/system/gentoo/portage/$dir"
-done
-
-echo
 echo "========== EXPORT COMPLETE =========="
 
 if (( DRY_RUN )); then
-    echo "Preview only. Run ./export.sh to perform the export."
+    echo "Preview only. Run ./export-arch.sh to perform the export."
 else
-    echo "System configuration exported to the repository."
+    echo "Arch system configuration exported to the repository."
 fi

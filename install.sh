@@ -4,37 +4,25 @@ set -euo pipefail
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP_ROOT="${XDG_STATE_HOME:-$HOME/.local/state}/ari-dots-backups/$(date +%Y%m%d-%H%M%S)"
 DRY_RUN=0
-PACKAGE_MODE=0
 
 usage() {
-    cat <<'EOF'
+    cat <<'HELP'
 Usage: ./install.sh [OPTIONS]
 
 Options:
   --dry-run    Preview without making changes
-  --packages   Install packages from the Gentoo manifests
   --help       Show this help message
 
 Examples:
   ./install.sh
   ./install.sh --dry-run
-  ./install.sh --packages
-  ./install.sh --packages --dry-run
-EOF
+HELP
 }
 
 while (($#)); do
     case "$1" in
-        --dry-run)
-            DRY_RUN=1
-            ;;
-        --packages)
-            PACKAGE_MODE=1
-            ;;
-        --help|-h)
-            usage
-            exit 0
-            ;;
+        --dry-run) DRY_RUN=1 ;;
+        --help|-h) usage; exit 0 ;;
         *)
             echo "ERROR: Unknown option: $1" >&2
             usage >&2
@@ -50,57 +38,6 @@ run() {
     printf '\n'
     if (( ! DRY_RUN )); then
         "$@"
-    fi
-}
-
-install_packages() {
-    local manifest package
-    local -a manifests packages
-
-    echo "========== GENTOO PACKAGE INSTALLATION =========="
-
-    if ! command -v emerge >/dev/null 2>&1; then
-        echo "ERROR: emerge was not found. This mode requires Gentoo Linux." >&2
-        exit 1
-    fi
-
-    if ! command -v sudo >/dev/null 2>&1; then
-        echo "ERROR: sudo was not found." >&2
-        exit 1
-    fi
-
-    shopt -s nullglob
-    manifests=("$ROOT"/packages/gentoo/*.txt)
-    shopt -u nullglob
-
-    if ((${#manifests[@]} == 0)); then
-        echo "ERROR: No Gentoo package manifests were found." >&2
-        exit 1
-    fi
-
-    for manifest in "${manifests[@]}"; do
-        echo "Reading: ${manifest#"$ROOT"/}"
-
-        while IFS= read -r package || [[ -n "$package" ]]; do
-            [[ "$package" =~ ^[[:space:]]*(#|$) ]] && continue
-            packages+=("$package")
-        done < "$manifest"
-    done
-
-    if ((${#packages[@]} == 0)); then
-        echo "ERROR: No packages were found in the manifests." >&2
-        exit 1
-    fi
-
-    echo
-    echo "Packages selected: ${#packages[@]}"
-
-    if (( DRY_RUN )); then
-        echo "DRY RUN: asking Portage to preview the transaction."
-        sudo emerge --pretend --getbinpkg --usepkg --verbose "${packages[@]}"
-    else
-        echo "Starting package installation."
-        sudo emerge -av --getbinpkg --usepkg "${packages[@]}"
     fi
 }
 
@@ -138,19 +75,12 @@ link_item() {
     echo "Linked: $dest"
 }
 
-echo "========== ARI-DOTS INSTALLER =========="
+echo "========== ARI-DOTS SHARED INSTALLER =========="
 echo "Repository: $ROOT"
 echo "Backup location: $BACKUP_ROOT"
 
 if (( DRY_RUN )); then
     echo "DRY RUN: no changes will be made."
-fi
-
-if (( PACKAGE_MODE )); then
-    install_packages
-    echo
-    echo "Package operation finished."
-    exit 0
 fi
 
 echo
