@@ -1,0 +1,4 @@
+mpvpaper
+swayfx
+yay
+yay-debug
