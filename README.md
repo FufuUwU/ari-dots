@@ -1,5 +1,8 @@
 # Ari-Dots
 
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/3821f06e-5778-4a8f-aa5d-78d8babe12eb" />
+
+
 Personal Linux dotfiles and system configuration for Arch Linux and Gentoo.
 
 ## Installation order
