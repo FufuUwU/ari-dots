@@ -28,7 +28,6 @@ pavucontrol
 
 # Hardware controls
 brightnessctl
-light
 
 # Desktop integration
 gnome-keyring
