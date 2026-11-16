@@ -232,7 +232,7 @@ gaps inner 5
 gaps outer 12
 
 # Opacity
-for_window [all] opacity set 0.75
+for_window [all] opacity set 0.9
 for_window [app_id="gimp*"] opacity set 1.0
 for_window [app_id="krita*"] opacity set 1.0
 for_window [app_id="org.inkscape.Inkscape"] opacity set 1.0
