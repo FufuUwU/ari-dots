@@ -39,6 +39,7 @@ alias epkg='emerge -av --getbinpkg --usepkg --ask'
 alias sudo='sudo '
 alias bashreload='source ~/.bashrc'
 alias swayreload='swaymsg reload && notify-send "SwayFX" "Configuration reloaded"'
+alias server='ssh bwah.dev -p 2020 -l ari'
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
