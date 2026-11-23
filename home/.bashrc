@@ -78,3 +78,4 @@ fi
 if [[ $- == *i* ]] && [ -t 1 ] && command -v hyfetch >/dev/null 2>&1; then
     hyfetch
 fi
+export PATH="$HOME/.cargo/bin:$PATH"
